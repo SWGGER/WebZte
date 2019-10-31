@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中兴业务平台构建与业务集成</title>
+		<link rel="stylesheet" type="text/css" href="../css/index.css"/>
+		<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="../js/login.js"></script>
+	</head>
+	<body>
+		<span class="header_one">中兴业务</span><span class="header_two">平台构建与业务集成</span>	
+		<div class="bg">
+			<div class="wel">登录</div>
+	        <div class="user">
+	       	    <div id="yonghu" style="">用户名</div>
+	       	    <input id="user_id" type="text" name="用户"  placeholder="请输入员工账号"/>
+	       	    <span id="userid_reg"></span>
+	        </div>
+	        <div class="password" >
+	        	<div id="yonghu" >密&nbsp;&nbsp;&nbsp;码</div>
+	       	    <input id="psw" type="password" name="密码" placeholder="请输入密码" />
+	       	    <span id="psw_reg"></span>
+	        </div>
+	        <div class="rem">
+	        	<div id="yonghu" >验证码</div>
+	       	    <input type="text" id="code" name="验证码"/>
+	       	   </br><img id="img" src="http://localhost:8050/USER-SERVICE/userApi/getImage" />
+      			 <a href='#' onclick="changeImg()" style="color:white;"><label style="color:black;">看不清？</label></a>
+	        </div>
+	        <input class="btn" type="button" name="登录" value="登录" onclick="login_ready()" />
+		</div>
+		<span class="bott_one">@copy/right&nbsp;&nbsp;&nbsp;</span><span class="bott_two">第二小组版权所有</span>	
+	</body>
+</html>
