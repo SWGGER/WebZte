@@ -1,0 +1,22 @@
+.maincontainer{
+	margin-left: 12%;
+	margin-top: 12%;
+}
+
+.littlebox{
+	margin-top: 20px;
+}
+
+.choosen-label{
+	font-weight: bold;
+	font-size: 25px;
+	text-align: center;
+}
+
+#moredetails{
+	background-color: #f1f4f5;
+}
+
+#confirmmoredetails{
+	background-color: #f1f4f5;
+}

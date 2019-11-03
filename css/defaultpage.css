@@ -1,0 +1,67 @@
+.img-circle{
+	height: 40px;
+	width: 40px;
+	border-radius: 20px;
+}
+
+.imgbox{
+	float: right;
+	margin-right: 50px;
+	margin-top: 10px;
+}
+
+.topdiv{
+	height: 60px;
+	background-color: #ffffff;
+}
+
+.outerpanel{
+	margin-top: 2%;
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+	background-color: white;
+	border-radius: 5px;
+	width: 96%;
+	height: 83%;
+}
+
+.containerpanel{
+	margin-left: 2%;
+	margin-right: 2%;
+	padding-top: 2%;
+}
+
+.textpanpel{
+	padding-bottom: 1%;
+	border-bottom:1px solid #dddddd;
+}
+
+.footerpanel{
+	height: 62px;
+	background-color: #f9f9f9;
+	padding-bottom: 1%;
+	margin-top: 2%;
+	line-height: 62px;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	color: #58666e;
+}
+
+.mainpanel{
+	margin-top: 1%;
+}
+
+.verifypng{
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+}
+
+.required-flag{
+	color: #d9534f;
+}
+
+.requiredless-flag{
+	color: grey;
+}
