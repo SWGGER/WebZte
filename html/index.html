@@ -5,6 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>中兴业务平台构建与业务集成 </title>
+<script type="text/javascript" src="../js/jquery-2.2.1.min.js" ></script>
+<link rel="stylesheet" href="../css/tab.css" />
 <link rel="stylesheet" href="../bootstrap/css/bootstrap-select.css" />
 <link rel="stylesheet" href="../bootstrap/css/bootstrap-table.min.css" />
 <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
@@ -15,9 +17,7 @@
 <link href="../assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="../css/addemployee.css" />
 <link rel="stylesheet" href="../css/bossdeptdis.css" />
-<link rel="stylesheet" href="../css/jquery.tagsinput.css" />
 <link rel="stylesheet" href="../css/addjob.css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/login.js"></script>
 <script type="text/javascript" src="../js/show.js"></script>
 <script type="text/javascript" src="../js/main.js" ></script>
@@ -28,8 +28,9 @@
 <script type="text/javascript" src="../js/employtable.js" ></script>
 <script type="text/javascript" src="../js/addbossdept.js" ></script>
 <script type="text/javascript" src="../js/bossdeptdis.js" ></script>
-<script type="text/javascript" src="../js/jquery.tagsinput.js" ></script>
+<script type="text/javascript" src="../js/tab.js" ></script>
 <script type="text/javascript" src="../js/addjob.js"></script>
+
 <style>
 	@font-face {
 		font-family:'myfirstFont';
@@ -37,22 +38,8 @@
 	}
 </style>
 </head>
-<script type="text/javascript">
-	var mylist = [];
-	$(function() {
-		$('#tags_2').tagsInput({
-			width: '',
-			onChange: function(elem, elem_tags)
-			{
-				
-			}
-		});
-		
-	});
 
-</script>
 <body>
-
 <div style="height: 100%;width: 100%;">
 	<div style="float: left;width: 19%; background-color: #2f353f;height: 100%;">
 		<ul class="cd-accordion-menu animated">
@@ -418,7 +405,10 @@
 			<!--  权限管理  -> 部门权限  -> 添加职位  -->
 			<div class="containerpanel" style="height: 90%;display: none;" id="showleadaddjob">
 				<div class="textpanpel">
-					权限管理  > 部门权限  > 添加职位
+					权限管理  > 部门权限  > 添加职位    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span id="jobloc" style="margin-left: 600px;"></span>
+					<span id="addjobdeptname"></span>
+					
 				</div>
 				<div class="mainpanel" style="height: 100%;">
 					<div style="height: 75%; overflow-y: scroll;">
@@ -450,21 +440,27 @@
 							    </div>
 							    
 							    <div class="form-inline littlebox" style="height: 117px;margin-left: -15px;width: 800px;">
-							    	<div class="col-lg-6">
-							    		<sup class="required-flag">*</sup>
-							    		<label>职位权限：</label>
-							    		<input type="text" id="leadaddjobpermissiontext" class="form-control"> 
-							   			<ul id="leadaddjobpermissionul"></ul>
-							    	</div>
-							    	
-							    	<div class="col-lg-5" style="margin-left: -100px;">
-						    			<input id="tags_2" type="text" class="tags form-control" value="" style="border: none;" disabled="true" />
-							    	</div>
-							    	<div class="col-lg-1" style="margin-left: 50px;">
-							    		<div id="moretagsbobx" style="display: none;">
-							    			<button class="btn btn-default" type="button" id="moretags" title="查看更多"><i class="icon ion-more"></i></button>
-							    		</div>
-							        </div>
+								    <div class="col-lg-6">
+										<sup class="required-flag">*</sup>
+										<label>职位权限：</label>
+										<input type="text" id="aaaaa" class="stext" style="display: none;"> 
+										<input type="text" id="leadaddjobpermissiontext" class="form-control"> 
+										<ul id="leadaddjobpermissionul"></ul>
+									</div>
+									
+									<div class="col-lg-5" style="margin-left: -100px;"> 
+										<div class="plus-tag tagbtn clearfix" id="myTags"></div>
+								    </div>
+					
+
+									<div class="col-lg-1" style="margin-left: 50px;">
+										<div id="moretagsbobx" style="display: none;">
+											<button class="btn btn-default" type="button" id="moretags" title="查看更多"><i class="icon ion-more"></i></button>
+										</div>
+								   </div>
+								   
+								   <!--<input type="text" id="aaaaa" class="stext"> 
+									<div class="plus-tag tagbtn clearfix" id="myTags"></div>-->
 							   		
 							    </div>
 							    
@@ -865,57 +861,9 @@
 		</div>
 	</div>
 	
-		<!-- 权限管理添加职位点击全部权限按钮弹出确认模态框 -->
+		<!-- 权限管理添加职位点击确认模态框中确认按钮 -->
 	    <div>
-			<div id="allpermission_modal"  class="modal fade" data-backdrop="static">
-				<div>
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content" style="background-color:#ffffff;">
-
-							<div class="modal-header">
-								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
-								<div class="choosen-label">所有职能权限</div>
-							</div>
-
-							<div class="modal-body" style="height: 350px;">
-								
-								<div style="height: 85%; overflow-y: scroll;">
-									<div style="height: 100%;">
-											
-										<div class="col-lg-3"></div>
-										<div class="col-lg-6">
-											
-											<div class="form-inline">
-												<sup class="required-flag">*</sup>
-										   		<label>部门名称&nbsp;&nbsp;：</label>
-										   		<input type="text" id=" " class="form-control" disabled="true" />
-										    </div>
-											
-										
-											
-										</div>
-										<div class="col-lg-3"></div>
-										    
-									</div>
-								</div>
-
-							<div class="modal-footer">
-								<div>
-									<button id="closeallpermission_modal" class="btn btn-success" style="outline:none;margin-top: -5px;">确定</button>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	    <!-- 权限管理添加职位点击确定录入按钮弹出确认模态框 -->
-	    <div>
-			<div id="alljob_modal"  class="modal fade" data-backdrop="static">
+			<div id="addjobs_modal"  class="modal fade" data-backdrop="static">
 				<div>
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content" style="background-color:#ffffff;">
@@ -925,9 +873,10 @@
 								<div class="choosen-label">添加职位</div>
 							</div>
 
-							<div class="modal-body" style="height: 410px;">
+							<div class="modal-body" style="height: 350px;">
 								
-								<div style="height: 90%; overflow-y: scroll;">
+								<div style="height: 85%; overflow-y: scroll;">
+									
 									<div style="height: 100%;">
 										<div class="col-lg-1"></div>
 										<div class="col-lg-11">
@@ -955,8 +904,9 @@
 									    		<label>职位权限：</label>
 									   			<textarea id="confirmleadaddjobpermission" class="form-control" style="height: 90px;width: 280px;resize:none;" disabled="true"></textarea>
 											</div>
-									</div>
-								</div>
+									    </div>
+								    </div>
+							    </div>
 							</div>
 							
 							<div class="modal-footer">
@@ -964,15 +914,50 @@
 									<button id="alljobstorebtn" class="btn btn-success" style="outline:none;margin-top: -5px;">确定</button>
 								</div>
 							</div>
-							
-						</div>
 					</div>
 				</div>
 			</div>
-		    </div>
 		</div>
+	</div>
+		
+		<!-- 权限管理添加职位点击全部权限按钮弹出确认模态框 -->
+	    <div>
+			<div id="allpermission_modal"  class="modal fade" data-backdrop="static">
+				<div>
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">所有职能权限</div>
+							</div>
+
+							<div class="modal-body" style="height: 200px;">
+								<div style="height: 80%; overflow-y: scroll;">
+									<div style="height: 100%;">
+										<div class="col-lg-1"></div>
+										<div class="col-lg-10">
+											<table id="permissiontable"  class="table table-hover"></table>
+										</div>
+										<div class="col-lg-1"></div>
+									</div>
+								</div>
+
+							<div class="modal-footer">
+								<div>
+									<button id="closeallpermission_modal" class="btn btn-success" style="outline:none;margin-top: -5px;">确定</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-	
+
 	</div>
 </div>	
 	

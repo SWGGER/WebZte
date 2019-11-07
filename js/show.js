@@ -44,6 +44,29 @@ function showpermissiondisfun(){
 
 //显示权限管理添加职位
 function showaddjobfun(){
+	var row_info = {"userid":getCookieValue("userId")};
+	$.ajax({
+        type:"POST",
+        dataType:"json",
+        url:"http://localhost:8050/USER-SERVICE/userApi/addRole/selectlocanddeptbyuserid",
+        contentType:'application/json;charset=UTF-8',
+	    data:JSON.stringify(row_info),
+        async:false,
+        xhrFields: {
+			withCredentials: true
+		},
+		crossDomain: true,
+	    success:function(data){
+	        if(data.code == 0){
+	        	$("#jobloc").html(data.payload["deptloc"]);
+	        	$("#addjobdeptname").html(data.payload["deptname"]);
+	        }
+	    },
+	    error:function(data){
+			alert("根据uesrid获取地区部门连接失败，请重试！");
+	    }
+    });
+    
 	addjobresetbtnfunction();
 	$("#showleadaddjob").show();
 	$("#showbossdeptdis").hide();

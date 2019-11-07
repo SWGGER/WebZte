@@ -137,14 +137,10 @@ function callbackpermission(data){
 } 
   
 function changetoinputpermission(data){
-	if(!$('#tags_2').tagExist(data)){
-		$('#tags_2').addTag(data);
-		mylist.push(data);
-	}else{
-		alert("已添加该标签，请重新输入");
-	}
+	var name = data;
+	if(name != '') setTips(name,-1);
 	
-  	leadaddjobpermissiontext.value=data;
+  	leadaddjobpermissiontext.value="";
   	leadaddjobpermissiontextul.style.display="none"; 
 }
 
@@ -177,20 +173,17 @@ function findalllevel(){
 //添加时点击录入按钮
 function addjobtoconfirmfunction(){
 	var levelend = $("#leadaddjoblevelto").val();
-	if(levelend != "" && jobflag  && mylist.length >0){
+	if(levelend != "" && jobflag ){
 		var jobname = $("#leadaddjobnametext").val();
-		var jobloc = "南京";
-		var addjobdeptname = "JAVA开发部";
 		var jobfunc = $("#leadaddjobdiscription").val();
 		var levelstart = $("#leadaddjoblevelfrom").val();
 		var levelend = $("#leadaddjoblevelto").val();
-		
-		$("#alljob_modal").modal("show");
+		$("#addjobs_modal").modal("show");
 		$("#confirmleadaddjobname").val(jobname);
 		$("#confirmleadaddjoblevelfrom").val(levelstart);
 		$("#confirmleadaddjoblevelto").val(levelend);
 		$("#confirmleadaddjobdiscription").val(jobfunc);
-		$("#confirmleadaddjobpermission").val(mylist);
+		$("#confirmleadaddjobpermission").val(getTips());
 	}else{
 		alert("请确认必填选项!");
 	}
@@ -199,49 +192,64 @@ function addjobtoconfirmfunction(){
 //确认模态框弹窗时点击确定按钮
 function alljobstorefunction(){
 	var jobname = $("#leadaddjobnametext").val();
-	var jobloc = "南京";
-	var addjobdeptname = "JAVA开发部";
+	var jobloc = $("#jobloc").html();
+	var addjobdeptname = $("#addjobdeptname").html();
 	var jobfunc = $("#leadaddjobdiscription").val();
 	var levelstart = $("#leadaddjoblevelfrom").val();
 	var levelend = $("#leadaddjoblevelto").val();
-	var row_info = {"deptname":addjobdeptname,"deptloc":jobloc,"rolename":jobname,"rolefunc":jobfunc,"level_start":levelstart,"level_end":levelend,"permissionname": mylist};
-	console.log(row_info);
-	$("#alljob_modal").modal('hide');
-	addjobresetbtnfunction();
 	
-//	$.ajax({
-//      type:"POST",
-//      dataType:"json",
-//      url:"http://127.0.0.1:8050/EMPLOYEE-SERVICE/employeeApi/getUserId",
-//      contentType:'application/json;charset=UTF-8',
-//	    data:JSON.stringify(row_info),
-//      async:false,
-//      xhrFields: {
-//			withCredentials: true
-//		},
-//		crossDomain: true,
-//	    success:function(data){
-//	        if(data.code == 0){
-//	        	alert("添加职位成功！");
-//	        	$("#allpermission_modal").modal('hide');
-//	        	addjobresetbtnfunction();
-//	        }else{
-//	        	alert("添加职位失败，请重试！");
-//	        }
-//	    },
-//	    error:function(data){
-//			alert("添加职位连接失败，请重试！");
-//	    }
-//  });
+	var row_info = {"deptname":addjobdeptname,"deptloc":jobloc,"rolename":jobname,"rolefunc":jobfunc,"level_start":levelstart,"level_end":levelend,"permissionname": getTips()};
+	$.ajax({
+        type:"POST",
+        dataType:"json",
+        url:"http://localhost:8050/USER-SERVICE/userApi/addRole/insertinfo",
+        contentType:'application/json;charset=UTF-8',
+	    data:JSON.stringify(row_info),
+        async:false,
+        xhrFields: {
+			withCredentials: true
+		},
+		crossDomain: true,
+	    success:function(data){
+	        if(data.code == 0){
+	        	alert("添加职位成功！");
+	        	$("#addjobs_modal").modal('hide');
+	        	addjobresetbtnfunction();
+	        }else{
+	        	alert("添加职位失败，请重试！");
+	        }
+	    },
+	    error:function(data){
+			alert("添加职位连接失败，请重试！");
+	    }
+    });
 	
 }
 
-
-
 //点击显示更多标签按钮
 function moretagsfunction(){
-	alert(11);
 	$("#allpermission_modal").modal('show');
+	var tablelist = getTips();
+	var options = "";
+	for(var m = 0;m<tablelist.length;m++){
+		if(m%3 == 0){
+			options += "<tr><td>" + tablelist[m] +"<td>";
+		}else if(m%3 == 1){
+			options += "<td>" + tablelist[m] +"<td>";
+		}else{
+			options += "<td>" + tablelist[m] +"<td></tr>";
+		}
+	}
+	
+	if(m % 3 == 0){
+		
+	}else if(m % 3 == 1){
+		options +="<td></td><td></td><td></td><td></td></tr>"
+	}else{
+		options +="<td></td><td></td></tr>"
+	}
+	$("#permissiontable").html("");
+	$("#permissiontable").append(options);
 };
 
 //添加时点击重置按钮
@@ -254,8 +262,6 @@ function addjobresetbtnfunction(){
     jobflag = false;
     $("#leadaddjobdiscription").val("");
     $("#leadaddjobpermissiontext").val("");
-    mylist = [];
-    $('#tags_2_tagsinput .tag').remove();
-    $('#tags_2').clearTag();
+    $("#myTags").html("");
     $("#moretagsbobx").hide();
 };

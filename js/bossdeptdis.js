@@ -41,7 +41,7 @@ $(document).ready(function(){
 		    $.ajax({
 			    type:"POST",
 			    dataType:"json",
-			    url:"http://localhost:8050/USER-SERVICE/userApi/addRole/fuzzySelectRolename",
+			    url:"http://localhost:8050/USER-SERVICE/userApi/emp/fuzzyselectDeptnameAndLoc",
 			    async:false,
 			    contentType:'application/json;charset=UTF-8',
 		        data:JSON.stringify(row_info),
@@ -119,31 +119,30 @@ function bossdeptdisadd(){
 	var people = $("#leadertext").val();
 	if(dept != "" && people != ""){
 		if(leadertextflag && bossdisdeptnametextflag){
-			var row_info = {"dept":dept,"people":people};
-			console.log(row_info);
-//			$.ajax({
-//		        type:"POST",
-//		        dataType:"json",
-//		        url:"http://127.0.0.1:8050/EMPLOYEE-SERVICE/employeeApi/ ",
-//		        contentType:'application/json;charset=UTF-8',
-//			    data:JSON.stringify(row_info),
-//		        async:false,
-//		        xhrFields: {
-//					withCredentials: true
-//				},
-//				crossDomain: true,
-//		        success:function(data){
-//		            if(data.code == 0){
-//		            	alert("权限分配成功！");
-//						bossdeptdisrese();
-//		            }else{
-//		            	alert("权限分配错误，请重试！");
-//		        	}
-//		        },
-//		        error:function(data){
-//		            alert("权限分配连接错误，请重试！");
-//		        }
-//		    });
+			var row_info = {"deptinfo":dept,"userinfo":people};
+			$.ajax({
+		        type:"POST",
+		        dataType:"json",
+		        url:"http://localhost:8050/USER-SERVICE/userApi/addRole/insertUDRinfo",
+		        contentType:'application/json;charset=UTF-8',
+			    data:JSON.stringify(row_info),
+		        async:false,
+		        xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+		        success:function(data){
+		            if(data.code == 0){
+		            	alert("权限分配成功！");
+						bossdeptdisrese();
+		            }else{
+		            	alert("权限分配错误，请重试！");
+		        	}
+		        },
+		        error:function(data){
+		            alert("权限分配连接错误，请重试！");
+		        }
+		    });
 		    
 		}else{
 			alert("您输入的部门、负责人不在数据库中,请重新检查!");
