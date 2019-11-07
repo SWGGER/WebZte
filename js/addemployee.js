@@ -72,10 +72,11 @@ $(document).ready(function(){
 	
 	//电话的格式校验
 	$("#addemploytel").bind("blur",function(){
-		var addemploytelmatch=/^1(3|4|5|7|8)\d{9}$/;
+		var istelmatch = /^(\d{3,4}-)?\d{6,9}$/;
+		var addemploytelmatch=/^((\+?86)|(\(\+86\)))?( )?1(3|4|5|7|8)\d{9}$/;
 		var addemploytel=$("#addemploytel").val();
 		if(addemploytel!=""){
-			if(addemploytelmatch.test(addemploytel)){
+			if(addemploytelmatch.test(addemploytel) || istelmatch.test(addemploytel)){
                 $("#addemploytelcheck").html("<img src='../img/correct.png' class='verifypng' />格式正确");
                 $("#addemploytel").css("border-color","#cccccc");
                 addemploytelflag = true;

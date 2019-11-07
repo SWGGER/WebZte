@@ -70,7 +70,7 @@ function init_showemploytable(){
             if (value) {
                 return value;
             } else {
-                return '<div><div class="btn btn-warning" id="baseinfo"  title="基本信息"><span class="glyphicon glyphicon-edit" ></span></div>'+'<div class="btn btn-info" style="margin-left: 10px;" id="detailinfo" title="详细信息"><span class="glyphicon glyphicon-cloud-upload"></span></div>';
+                return '<div><div class="btn btn-warning" id="baseinfo"  title="基本信息"><span class="glyphicon glyphicon-th-list" ></span></div>'+'<div class="btn btn-info" style="margin-left: 10px;" id="detailinfo" title="详细信息"><span class="glyphicon glyphicon-list"></span></div>';
             }
         },
         events: {               // 编辑按钮组事件

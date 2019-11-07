@@ -14,7 +14,11 @@
 <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link href="../assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="../css/addemployee.css" />
+<link rel="stylesheet" href="../css/bossdeptdis.css" />
+<link rel="stylesheet" href="../css/jquery.tagsinput.css" />
+<link rel="stylesheet" href="../css/addjob.css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/login.js"></script>
 <script type="text/javascript" src="../js/show.js"></script>
 <script type="text/javascript" src="../js/main.js" ></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap-select.js" ></script>
@@ -22,6 +26,10 @@
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js" ></script>
 <script type="text/javascript" src="../js/addemployee.js" ></script>
 <script type="text/javascript" src="../js/employtable.js" ></script>
+<script type="text/javascript" src="../js/addbossdept.js" ></script>
+<script type="text/javascript" src="../js/bossdeptdis.js" ></script>
+<script type="text/javascript" src="../js/jquery.tagsinput.js" ></script>
+<script type="text/javascript" src="../js/addjob.js"></script>
 <style>
 	@font-face {
 		font-family:'myfirstFont';
@@ -29,6 +37,20 @@
 	}
 </style>
 </head>
+<script type="text/javascript">
+	var mylist = [];
+	$(function() {
+		$('#tags_2').tagsInput({
+			width: '',
+			onChange: function(elem, elem_tags)
+			{
+				
+			}
+		});
+		
+	});
+
+</script>
 <body>
 
 <div style="height: 100%;width: 100%;">
@@ -70,17 +92,24 @@
 						</label>
 		
 						<ul>
-							<li class="AdddeptBTN">
+							<li class="AdddeptBTN" onclick="showadddeptfun()">
 								<a style="text-decoration:none;">
 									<i class="ion-plus-round"></i>
 									<span>添加部门</span>
 								</a>
 							</li>
 							
-							<li class="DeldeptBTN">
+							<li class="AdddeptBTN" onclick="showaddjobfun()">
 								<a style="text-decoration:none;">
-									<i class="ion-minus-round"></i>
-									<span>删除部门</span>
+									<i class="ion-plus-round"></i>
+									<span>添加职位</span>
+								</a>
+							</li>
+							
+							<li class="PermissiondistributionBTN" onclick="showpermissiondisfun()">
+								<a style="text-decoration:none;">
+									<i class="ion-hammer"></i>
+									<span>权限分配</span>
 								</a>
 							</li>
 						</ul>
@@ -102,6 +131,7 @@
 	<div style="float: left;background-color: #f1f4f5;height: 100%;width: 81%;">
 		<div class="topdiv" style="position: relative;">
 			<div class="imgbox">
+				<span id="thisuserid"></span>
 				<div style="float: right; margin-top: 6px;margin-left: 10px;">
 					<button class="btn btn-danger"  id="loginoutbtn" title="退出"><i class="glyphicon glyphicon-off"></i></button>
 					<span>退出</span>
@@ -118,11 +148,8 @@
 				</div>
 				<div class="mainpanel" style="height: 100%;">
 					<div style="height: 80%; overflow-y: scroll;">
-						
 						<table class="table table-hover text-nowrap" id="tableemploydata">
 						</table>
-						
-						
 					</div>
 					<div class="footerpanel">
 						2019 @ 中兴业务平台构建与业务集成 .
@@ -225,7 +252,7 @@
 							<div class="col-lg-6">
 							    <div class="form-inline" style="margin-top: 15px;">
 							    	<label>&nbsp;&nbsp;证&nbsp;&nbsp;书&nbsp;&nbsp;：</label>
-							   		<input type="text" id="addemploycert" class="form-control" />
+							   		<textarea id="addemploycert" style="height: 90px;width: 300px;resize:none;" class="form-control"></textarea>
 							    </div>
 							</div>
 						</div>
@@ -282,6 +309,186 @@
 				</div>
 			</div>
 			
+			<!--  权限管理  -> 部门权限  -> 添加部门   -->
+			<div class="containerpanel" style="height: 90%;display: none;" id="showaddbossdept">
+				<div class="textpanpel">
+					权限管理  > 部门权限  > 添加部门
+				</div>
+				<div class="mainpanel" style="height: 100%;">
+					<div style="height: 75%; overflow-y: scroll;">
+						<div style="height: 77%;">
+							<div class="col-lg-3"></div>
+							<div class="col-lg-6">
+								
+								<div class="form-inline">
+									<sup class="required-flag">*</sup>
+							   		<label>部门名称&nbsp;&nbsp;：</label>
+							   		<input type="text" id="bossadddeptname" class="form-control" />
+							   		<span id="bossadddeptnamecheck"></span>
+							    </div>
+								
+								<div class="form-inline littlebox">
+									<sup class="required-flag">*</sup>
+							   		<label>部门缩写&nbsp;&nbsp;：</label>
+							   		<input type="text" id="bossadddeptprefix" class="form-control" />
+							   		<span id="bossadddeptprefixcheck"></span>
+							    </div>
+							    
+							    <div class="form-inline littlebox">
+							    	<sup class="required-flag">*</sup>
+							   		<label>部门所在地：</label>
+							   		<input type="text" id="bossadddeptloc" class="form-control" />
+							   		<span id="bossadddeptloccheck"></span>
+							    </div>
+							    
+							    <div class="form-inline littlebox">
+							   		<label>&nbsp;&nbsp;部门职能&nbsp;&nbsp;：</label>
+							   		<textarea id="bossadddeptfunc" style="height: 90px;width: 280px;resize:none;"  class="form-control" ></textarea>
+							    </div>
+								
+							</div>
+							<div class="col-lg-3"></div>
+							
+							
+						</div>
+						
+						<div style="margin-top: 20px;height: 10%;">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-1">
+								<button id="bossadddeptresetbtn" class="btn btn-info mybtn" style="outline:none;">重置</button>
+							</div>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-1">
+								<button id="bossadddeptconfirmbtn" class="btn btn-success mybtn" style="outline:none;">录入</button>
+							</div>
+							<div class="col-lg-5"></div>
+						</div>
+					</div>
+					<div class="footerpanel">
+						2019 @ 中兴业务平台构建与业务集成 .
+					</div>
+				</div>
+			</div>
+			
+			<!--  权限管理  -> 部门权限  -> 权限分配  -->
+			<div class="containerpanel" style="height: 90%;display: none;" id="showbossdeptdis">
+				<div class="textpanpel">
+					权限管理  > 部门权限  > 权限分配 
+				</div>
+				<div class="mainpanel" style="height: 100%;">
+					<div style="height: 75%; overflow-y: scroll;">
+						<div style="height: 77%;">
+							<div class="col-lg-3"></div>
+							<div class="col-lg-6">
+								<div class="form-inline" style="margin-top: 70px;">
+									<sup class="required-flag">*</sup>
+							   		<label>选择部门&nbsp;&nbsp;：</label>
+							   		<input type="text" id="bossdisdeptnametext" class="form-control"> 
+        							<ul id="bossdisdeptnameul"></ul>
+							    </div>
+								
+								<div class="form-inline littlebox">
+									<sup class="required-flag">*</sup>
+							   		<label>指定负责人：</label>
+							   		<input type="text" id="leadertext" class="form-control"> 
+        							<ul id="leadertextul"></ul> 
+							    </div>
+							</div>
+							<div class="col-lg-3"></div>
+						</div>
+						
+						<div style="margin-top: 20px;height: 10%;">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-1">
+								<button id="bossdeptdisrese" class="btn btn-info mybtn" style="outline:none;">重置</button>
+							</div>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-1">
+								<button id="bossdeptdisadd" class="btn btn-success mybtn" style="outline:none;">录入</button>
+							</div>
+							<div class="col-lg-5"></div>
+						</div>
+					</div>
+					<div class="footerpanel">
+						2019 @ 中兴业务平台构建与业务集成 .
+					</div>
+				</div>
+			</div>
+			
+			<!--  权限管理  -> 部门权限  -> 添加职位  -->
+			<div class="containerpanel" style="height: 90%;display: none;" id="showleadaddjob">
+				<div class="textpanpel">
+					权限管理  > 部门权限  > 添加职位
+				</div>
+				<div class="mainpanel" style="height: 100%;">
+					<div style="height: 75%; overflow-y: scroll;">
+						<div style="height: 77%;">
+							<div class="col-lg-1"></div>
+							<div class="col-lg-11">
+								<div class="form-inline">
+									<sup class="required-flag">*</sup>
+							   		<label>职位名称：</label>
+							   		<input type="text" id="leadaddjobnametext" class="form-control"> 
+							   		<span id="leadaddjobnamecheck"></span>
+							    </div>
+							    
+							    <div class="form-inline littlebox">
+							    	<sup class="required-flag">*</sup>
+							   		<label>级别范围：</label>
+							   		<select class="form-control" id="leadaddjoblevelfrom" style="width: 172px;">
+							   		</select>
+									
+									<span> ~ </span>
+									<select class="form-control" id="leadaddjoblevelto" style="width: 172px;">
+									</select>
+							    </div>
+							    
+							    <div class="form-inline littlebox">
+							   		<label>&nbsp;&nbsp;职位描述：</label>
+							   		<textarea id="leadaddjobdiscription" class="form-control" style="height: 90px;width: 280px;resize:none;"></textarea>
+							   		<span id="leadaddjobdiscriptioncheck"></span>
+							    </div>
+							    
+							    <div class="form-inline littlebox" style="height: 117px;margin-left: -15px;width: 800px;">
+							    	<div class="col-lg-6">
+							    		<sup class="required-flag">*</sup>
+							    		<label>职位权限：</label>
+							    		<input type="text" id="leadaddjobpermissiontext" class="form-control"> 
+							   			<ul id="leadaddjobpermissionul"></ul>
+							    	</div>
+							    	
+							    	<div class="col-lg-5" style="margin-left: -100px;">
+						    			<input id="tags_2" type="text" class="tags form-control" value="" style="border: none;" disabled="true" />
+							    	</div>
+							    	<div class="col-lg-1" style="margin-left: 50px;">
+							    		<div id="moretagsbobx" style="display: none;">
+							    			<button class="btn btn-default" type="button" id="moretags" title="查看更多"><i class="icon ion-more"></i></button>
+							    		</div>
+							        </div>
+							   		
+							    </div>
+							    
+							</div>
+						</div>
+						
+						<div style="margin-top: 20px;height: 10%;">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-1">
+								<button id="addjobresetbtn" class="btn btn-info mybtn" style="outline:none;">重置</button>
+							</div>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-1">
+								<button id="addjobtn" class="btn btn-success mybtn" style="outline:none;">录入</button>
+							</div>
+							<div class="col-lg-5"></div>
+						</div>
+					</div>
+					<div class="footerpanel">
+						2019 @ 中兴业务平台构建与业务集成 .
+					</div>
+				</div>
+			</div>
+			
 			
 		</div>
 		
@@ -304,7 +511,7 @@
 							<div class="modal-body" style="height: 460px;">
 								
 								<div style="height: 90%; overflow-y: scroll;">
-									<div style="height: 68%;">
+									<div style="height: 75%;">
 										
 										<div class="col-lg-6">
 											<div class="form-inline ">
@@ -399,7 +606,7 @@
 											
 										    <div class="form-inline" style="margin-top: 15px;">
 										    	<label>&nbsp;&nbsp;证&nbsp;&nbsp;书&nbsp;&nbsp;：</label>
-										   		<input type="text" id="confirmcerti" class="form-control" disabled="true" />
+										   		<textarea id="confirmcerti" class="form-control" style="height: 90px;width: 280px;resize:none;" disabled="true"></textarea>
 										    </div>
 										    
 										</div>
@@ -448,8 +655,8 @@
 		</div>
 	</div>
 	
-	<!-- 员工信息表格点击基本信息按钮模态框 -->
-	<div>
+	    <!-- 员工信息表格点击基本信息按钮模态框 -->
+	    <div>
 			<div id="employbaseinfo_modal"  class="modal fade" data-backdrop="static">
 				<div>
 					<div class="modal-dialog modal-lg">
@@ -541,8 +748,8 @@
 		</div>
 	</div>
 	
-	<!-- 员工信息表格点击详细信息按钮模态框 -->
-	<div>
+	    <!-- 员工信息表格点击详细信息按钮模态框 -->
+	    <div>
 			<div id="employdetail_modal"  class="modal fade" data-backdrop="static">
 				<div>
 					<div class="modal-dialog modal-lg">
@@ -595,9 +802,179 @@
 		</div>
 	</div>
 	
+		<!-- boss权限管理添加部门点击录入按钮弹出确认模态框 -->
+	    <div>
+			<div id="bossadddept_modal"  class="modal fade" data-backdrop="static">
+				<div>
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">确认部门信息</div>
+							</div>
+
+							<div class="modal-body" style="height: 350px;">
+								
+								<div style="height: 85%; overflow-y: scroll;">
+									<div style="height: 100%;">
+											
+										<div class="col-lg-3"></div>
+										<div class="col-lg-6">
+											
+											<div class="form-inline">
+												<sup class="required-flag">*</sup>
+										   		<label>部门名称&nbsp;&nbsp;：</label>
+										   		<input type="text" id="confirmbossadddeptname" class="form-control" disabled="true" />
+										    </div>
+											
+											<div class="form-inline littlebox">
+												<sup class="required-flag">*</sup>
+										   		<label>部门缩写&nbsp;&nbsp;：</label>
+										   		<input type="text" id="confirmbossadddeptprefix" class="form-control" disabled="true" />
+										    </div>
+										    
+										    <div class="form-inline littlebox">
+										    	<sup class="required-flag">*</sup>
+										   		<label>部门所在地：</label>
+										   		<input type="text" id="confirmbossadddeptloc" class="form-control" disabled="true" />
+										    </div>
+										    
+										    <div class="form-inline littlebox">
+										   		<label>&nbsp;&nbsp;部门职能&nbsp;&nbsp;：</label>
+										   		<textarea id="confirmbossadddeptfunc" style="height: 90px;width: 270px;resize:none;"  class="form-control" disabled="true" ></textarea>
+										    </div>
+											
+										</div>
+										<div class="col-lg-3"></div>
+										    
+									</div>
+								</div>
+
+							<div class="modal-footer">
+								<div>
+									<button id="confirmdeptaddbtn" class="btn btn-success" style="outline:none;margin-top: -5px;">录入</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-</div>
+		<!-- 权限管理添加职位点击全部权限按钮弹出确认模态框 -->
+	    <div>
+			<div id="allpermission_modal"  class="modal fade" data-backdrop="static">
+				<div>
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
 
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">所有职能权限</div>
+							</div>
 
+							<div class="modal-body" style="height: 350px;">
+								
+								<div style="height: 85%; overflow-y: scroll;">
+									<div style="height: 100%;">
+											
+										<div class="col-lg-3"></div>
+										<div class="col-lg-6">
+											
+											<div class="form-inline">
+												<sup class="required-flag">*</sup>
+										   		<label>部门名称&nbsp;&nbsp;：</label>
+										   		<input type="text" id=" " class="form-control" disabled="true" />
+										    </div>
+											
+										
+											
+										</div>
+										<div class="col-lg-3"></div>
+										    
+									</div>
+								</div>
+
+							<div class="modal-footer">
+								<div>
+									<button id="closeallpermission_modal" class="btn btn-success" style="outline:none;margin-top: -5px;">确定</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	    <!-- 权限管理添加职位点击确定录入按钮弹出确认模态框 -->
+	    <div>
+			<div id="alljob_modal"  class="modal fade" data-backdrop="static">
+				<div>
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">添加职位</div>
+							</div>
+
+							<div class="modal-body" style="height: 410px;">
+								
+								<div style="height: 90%; overflow-y: scroll;">
+									<div style="height: 100%;">
+										<div class="col-lg-1"></div>
+										<div class="col-lg-11">
+											<div class="form-inline">
+												<sup class="required-flag">*</sup>
+										   		<label>职位名称：</label>
+										   		<input type="text" id="confirmleadaddjobname" class="form-control" disabled="true"/> 
+										    </div>
+										    
+										    <div class="form-inline littlebox">
+										    	<sup class="required-flag">*</sup>
+										   		<label>级别范围：</label>
+										   		<input type="text" class="form-control" id="confirmleadaddjoblevelfrom" disabled="true"/>
+												<span> ~ </span>
+												<input type="text" class="form-control" id="confirmleadaddjoblevelto" disabled="true"/>
+										    </div>
+										    
+										    <div class="form-inline littlebox">
+										   		<label>&nbsp;&nbsp;职位描述：</label>
+										   		<textarea id="confirmleadaddjobdiscription" class="form-control" style="height: 90px;width: 280px;resize:none;" disabled="true"></textarea>
+										    </div>
+										    
+										    <div class="form-inline littlebox">
+									    		<sup class="required-flag">*</sup>
+									    		<label>职位权限：</label>
+									   			<textarea id="confirmleadaddjobpermission" class="form-control" style="height: 90px;width: 280px;resize:none;" disabled="true"></textarea>
+											</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal-footer">
+								<div>
+									<button id="alljobstorebtn" class="btn btn-success" style="outline:none;margin-top: -5px;">确定</button>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		    </div>
+		</div>
+	
+	
+	</div>
+</div>	
+	
 </body>
 </html>

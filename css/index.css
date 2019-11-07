@@ -16,7 +16,17 @@
     background:url('../img/4.jpg') no-repeat;
     background-size: 100%;
 }
-img{
+.code_img{
+	position: absolute;
+	height:30px;
+	width:160px;
+	margin-left:150px;
+	margin-top: 8px;
+}
+/*#img{
+	
+}*/
+.icon{
 	height:15px;
 	width:15px;
 	margin-left: -80px;
@@ -149,7 +159,7 @@ input{
     }   
     .rem{
 	    top: 11rem;
-        right: 14.3rem;
+        right: 3.5rem;
     }
     .fg{
 	    top: 11rem;
@@ -158,6 +168,9 @@ input{
     .btn{
     	top: 14rem;
         width: 15rem;
+    }
+    .code_img{
+    	right:-3.7rem;
     }
    
 }
