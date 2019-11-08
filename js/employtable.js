@@ -1,4 +1,5 @@
 var thisindex;
+var globle_selected_id = [];
 $(document).ready(function(){
 	
 	//关闭基本信息模态框按钮
@@ -13,12 +14,34 @@ $(document).ready(function(){
 		init_employdetail_modal();
 	});
 	
+	//点击导出
+	$("#output").click(function(){
+		console.log(globle_selected_id);
+	});
+	
+	
 });
 
 //初始化员工管理列表
 function init_showemploytable(){
     $("#tableemploydata").bootstrapTable('destroy');
     let ths = [{
+        field: 'checkbox',
+        checkbox: true,
+        visible:true,
+        //修改
+        formatter: function(value, row, index) {
+            for(i = 0;i<globle_selected_id.length;i++){
+                if(row.userid == globle_selected_id[i]){
+                    return {
+                        disabled : false,//设置是否可用
+                        checked : true//设置选中
+                    };
+                }
+            }
+            return value;
+        }
+    },{
         field: 'serialnumber',
 	    title: '序号',
 	    visible:true,
@@ -106,7 +129,7 @@ function init_showemploytable(){
         queryParamsType: '',
         queryParams:queryParamsByBegin,
         toolbar : "#toolbar",
-         striped: false,                      //是否显示行间隔色
+        striped: false,                      //是否显示行间隔色
         cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         pagination: true,                   //是否显示分页（*）
         sortable: true,                     //是否启用排序
@@ -123,6 +146,13 @@ function init_showemploytable(){
         cardView: false,                    //是否显示详细视图
         detailView: false,                  //是否显示父子表
         columns: ths,
+        onCheck: function(row){
+            globle_selected_id.push(row.userid);
+        },
+        onUncheck: function (row) {
+            var index = globle_selected_id.indexOf(row.userid);
+            globle_selected_id.splice(index,1);
+        },
         onLoadSuccess: function (data) {
             thistable_data = $('#tableemploydata').bootstrapTable('getData');
             if (thistable_data == '' || thistable_data == null) {
@@ -136,9 +166,11 @@ function init_showemploytable(){
 };
 
 function queryParamsByBegin(params){
+	var serachtext = $("#searchinput").val();
     let re  = {
         pageSize: params.pageSize,
-        pageNumber: params.pageNumber
+        pageNumber: params.pageNumber,
+        searchtext: serachtext
     }
     
 	if(params.pageNumber == 1){

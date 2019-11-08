@@ -118,8 +118,8 @@
 	<div style="float: left;background-color: #f1f4f5;height: 100%;width: 81%;">
 		<div class="topdiv" style="position: relative;">
 			<div class="imgbox">
-				<span id="thisuserid"></span>
 				<div style="float: right; margin-top: 6px;margin-left: 10px;">
+					<span id="thisuserid"></span>
 					<button class="btn btn-danger"  id="loginoutbtn" title="退出"><i class="glyphicon glyphicon-off"></i></button>
 					<span>退出</span>
 				</div>
@@ -135,6 +135,10 @@
 				</div>
 				<div class="mainpanel" style="height: 100%;">
 					<div style="height: 80%; overflow-y: scroll;">
+						<div id="toolbar">
+							<input id="searchinput" />
+							<button class="btn btn-default" type="button" id="output" title="导出"><i class="glyphicon glyphicon-share"></i></button>
+						</div>
 						<table class="table table-hover text-nowrap" id="tableemploydata">
 						</table>
 					</div>
@@ -406,7 +410,7 @@
 			<div class="containerpanel" style="height: 90%;display: none;" id="showleadaddjob">
 				<div class="textpanpel">
 					权限管理  > 部门权限  > 添加职位    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span id="jobloc" style="margin-left: 600px;"></span>
+					<span id="jobloc" style="margin-left: 500px;"></span>
 					<span id="addjobdeptname"></span>
 					
 				</div>

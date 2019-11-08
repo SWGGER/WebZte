@@ -46,33 +46,11 @@ $(document).ready(function(){
 	$("#leadaddjobnametext").bind("blur",function(){
 		var jobname = $("#leadaddjobnametext").val();
 		if(jobname!=""){
-			var row_info = {"data": jobname};
-		    $.ajax({
-			    type:"POST",
-			    dataType:"json",
-			    url:"http://localhost:8050/USER-SERVICE/userApi/addRole/selectRolename",
-			    async:false,
-			    contentType:'application/json;charset=UTF-8',
-		        data:JSON.stringify(row_info),
-		        xhrFields: {
-					withCredentials: true
-				},
-				crossDomain: true,
-			    success:function(data){
-			        if(data.code == 0){
-						$("#leadaddjobnamecheck").html("<img src='../img/correct.png' class='verifypng' />格式正确");
-			            $("#leadaddjobnametext").css("border-color","#cccccc");
-			            jobflag = true;
-			        }else{
-			        	$("#leadaddjobnamecheck").html("<img src='../img/error.png' class='verifypng'/>职位名已存在");
-			            $("#leadaddjobnametext").css("border-color","red");
-			            jobflag=false;
-			        }
-			    },
-			    error:function(data){
-					alert("职位查重连接失败！");
-			    }
-		    });
+			
+			$("#leadaddjobnamecheck").html("<img src='../img/correct.png' class='verifypng' />格式正确");
+            $("#leadaddjobnametext").css("border-color","#cccccc");
+            jobflag = true;
+			        
 			
 		}else{
 			$("#leadaddjobnamecheck").html("<img src='../img/error.png' class='verifypng'/>不可为空");
