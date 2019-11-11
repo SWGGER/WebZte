@@ -30,6 +30,8 @@
 <script type="text/javascript" src="../js/bossdeptdis.js" ></script>
 <script type="text/javascript" src="../js/tab.js" ></script>
 <script type="text/javascript" src="../js/addjob.js"></script>
+<link rel="stylesheet" href="../css/process.css" />
+<script type="text/javascript" src="../js/process.js" ></script>
 
 <style>
 	@font-face {
@@ -961,6 +963,43 @@
 		</div>
 	</div>
 	
+		<!-- 下载模态框 -->
+		<div>
+			<div id="process_modal"  class="modal fade" data-backdrop="static">
+				<div>
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+
+							<div class="modal-header">
+								<div class="choosen-label">下载进度</div>
+							</div>
+
+							<div class="modal-body" style="height: 200px;">
+								<div>
+									<section class="container">
+									    <div class="progress">
+									      <span class="green">
+									      	<span id="progressvalue">0</span>
+									      </span>
+									    </div>
+									    
+								    </section>
+								
+								</div>
+		
+							<div class="modal-footer">
+								<div>
+									<button id="downloadclosebtn" class="btn btn-success" style="outline:none;margin-top: -10px;">确定</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	</div>
 </div>	

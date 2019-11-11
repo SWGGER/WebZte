@@ -17,6 +17,8 @@ $(document).ready(function(){
 	//点击导出
 	$("#output").click(function(){
 		console.log(globle_selected_id);
+		$("#process_modal").modal("show");
+		goprogress();
 	});
 	
 	
