@@ -51,6 +51,8 @@ function gotoend(provalue){
 			$("#progressvalue").html('100');
 	    	setTimeout(function(){
 	        	alert("生成任务完成");
+	        	globle_selected_id = [];
+	        	$('#tableemploydata').bootstrapTable('refresh');
 	        },20);
     	}else{
     		alert("下载文件失败！");
@@ -59,7 +61,3 @@ function gotoend(provalue){
     }
     
 }
-
-
-
-
