@@ -1,7 +1,6 @@
 var thisindex;
 var globle_selected_id = [];
 $(document).ready(function(){
-	
 	//关闭基本信息模态框按钮
 	$("#closebaseinfobtn").click(function(){
 		$("#employbaseinfo_modal").modal("hide");
@@ -21,9 +20,57 @@ $(document).ready(function(){
 		goprogress();
 	});
 	
+	//点击导入
+	$("#input").click(function(){
+		$("#user_info_input_modal").modal("show");
+		inituserinfotable();
+	});	
 	
+	//导入选择文件
+	$("#add_userinfo_btn").click(function(){
+		$("#userinfo_upload").click();
+		 excel_load("#userinfo_upload");
+	})
 });
 
+var csv_datas=[];	//多文件处理
+var index  = -1;
+function excel_load(element_id){
+    var pre_data =[];
+    $(element_id).fileupload({
+        url : '/csv/csvUpload',
+        type : 'POST',
+        dataType : 'json',
+        autoUpload : false,
+        acceptFileTypes : /(\.|\/)(xls|xlsx)$/i,
+        add : function(e, data) { //点击打开之后
+            if(index == -1){
+                csv_datas = data
+            }
+            index ++;
+            //显示文件全名，作业显示改成bootstrap table  文件全名  图标 大小
+            filename = data.files[0].name
+            filename = filename.substring(0,filename.length - 4);
+            size = data.files[0].size;
+            var row_data = {};
+            row_data["excel_filename"] = filename
+            row_data["excel_png"] = "<img src=\"../img/EXCEL.png\" class=\"csvpng\"/>";
+            row_data["excel_size"] = size
+            $("#userinfo_table").bootstrapTable("append",row_data);
+            pre_data = data;
+            csv_datas.files[index] = data.files[0];
+        },
+        done : function(e, data) {
+        	
+        },
+        fail : function(e, data) {	//失败，提示用户，初始化数据
+            alert("上传失败，请重新上传！");
+            $("#csv_import").modal("hide");
+            init_csv_datas();
+            $("#showDrivers_choosen").modal("show");
+        }
+    });
+};
 //初始化员工管理列表
 function init_showemploytable(){
     $("#tableemploydata").bootstrapTable('destroy');
@@ -273,5 +320,41 @@ function setdetailinfotabledata(userid){
         error:function(data){
             alert("获取员工详细信息连接错误，请重试！");
         }
+    });
+}
+//初始化员工信息导入表
+function inituserinfotable(){
+	$("#userinfo_table").bootstrapTable('destroy');
+    $("#userinfo_table").bootstrapTable({
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 20, 30, 40],         //可供选择的每页的行数（*）
+        search: false,                      //是否显示表格搜索
+        strictSearch: false,
+        showColumns: false,                  //是否显示所有的列（选择显示的列）
+        showRefresh: false,                  //是否显示刷新按钮
+        minimumCountColumns: 3,             //最少允许的列数
+        clickToSelect: false,                //是否启用点击选中行
+        showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+        cardView: false,                    //是否显示详细视图
+        detailView: false,                  //是否显示父子表
+        columns: [{
+            field: 'excel_filename',
+            title: '文件名称',
+            visible:true
+        }, {
+            field: 'excel_png',
+            title: '文件类型',
+            visible:true
+        }, {
+            field: 'excel_size',
+            title: '文件大小',
+            visible:true
+        }]
     });
 }

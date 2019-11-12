@@ -20,3 +20,14 @@
 #confirmmoredetails{
 	background-color: #f1f4f5;
 }
+.userinfo-add-btn{
+	margin-left: 90%;
+}
+.excel-files{
+	margin-top:2% ;
+}
+.csvpng{
+	width: 30px;
+	height: 30px;
+	position: inherit;
+}
