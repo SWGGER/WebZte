@@ -15,9 +15,12 @@ $(document).ready(function(){
 	
 	//点击导出
 	$("#output").click(function(){
-		console.log(globle_selected_id);
-		$("#process_modal").modal("show");
-		goprogress();
+		if(globle_selected_id.length == 0){
+			alert("您还未选择导出信息，请重新选择!");
+		}else{
+			$("#process_modal").modal("show");
+			goprogress();
+		}
 	});
 	
 	//点击导入
@@ -29,23 +32,32 @@ $(document).ready(function(){
 	//导入选择文件
 	$("#add_userinfo_btn").click(function(){
 		$("#userinfo_upload").click();
-		 excel_load("#userinfo_upload");
+		excel_load("#userinfo_upload");
+	})
+	
+	//确定导入文件
+	$("#userinfo_submit").click(function(){
+		excel_datas.submit();
 	})
 });
 
-var csv_datas=[];	//多文件处理
+var excel_datas=[];	//多文件处理
 var index  = -1;
 function excel_load(element_id){
     var pre_data =[];
     $(element_id).fileupload({
-        url : '/csv/csvUpload',
+        url:"http://127.0.0.1:8050/EMPLOYEE-SERVICE/employeeApi/excelimport",
+        xhrFields: {
+			withCredentials: true
+		},
+		crossDomain: true,
         type : 'POST',
         dataType : 'json',
         autoUpload : false,
         acceptFileTypes : /(\.|\/)(xls|xlsx)$/i,
         add : function(e, data) { //点击打开之后
             if(index == -1){
-                csv_datas = data
+                excel_datas = data
             }
             index ++;
             //显示文件全名，作业显示改成bootstrap table  文件全名  图标 大小
@@ -58,19 +70,51 @@ function excel_load(element_id){
             row_data["excel_size"] = size
             $("#userinfo_table").bootstrapTable("append",row_data);
             pre_data = data;
-            csv_datas.files[index] = data.files[0];
+            excel_datas.files[index] = data.files[0];
         },
         done : function(e, data) {
-        	
+        	result = data.result;
+        	if(result.code==0){
+        		if(result.rechecklist.length > 0){
+        			$("#user_info_input_modal").modal("hide");
+        			init_importexcels();
+        			$("#sidrecheck_modal").modal("show");
+        			sidreturndata = result;
+        			
+        			//放导航栏中的名字
+					var append = "";
+					$("#main-nav").html("");
+					for(var i = 0; i < sidreturndata.rechecklist.length; i++) {
+						append += '<li class="portfolio"><a>' + sidreturndata.rechecklist[i].name+'<span style=\"display:none;\">'+sidreturndata.rechecklist[i].sid +'</span>' + '</a></li>'
+					}
+					$("#main-nav").append(append);
+					
+					//初始化第一个
+					initfirsttag(sidreturndata);
+	
+        		}else{
+        			alert("导入成功!");
+        			$("#user_info_input_modal").modal("hide");
+        			init_importexcels();
+        		}
+        	}else{
+        		alert("请检查表格信息，重新上传!");
+        		init_importexcels();
+        	}
         },
         fail : function(e, data) {	//失败，提示用户，初始化数据
             alert("上传失败，请重新上传！");
-            $("#csv_import").modal("hide");
-            init_csv_datas();
-            $("#showDrivers_choosen").modal("show");
         }
     });
 };
+
+function init_importexcels(){
+	excel_datas=[];
+	index  = -1;
+	pre_data =[];
+	inituserinfotable();
+}
+
 //初始化员工管理列表
 function init_showemploytable(){
     $("#tableemploydata").bootstrapTable('destroy');

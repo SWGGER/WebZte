@@ -6,8 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>中兴业务平台构建与业务集成 </title>
 <script type="text/javascript" src="../js/jquery-2.2.1.min.js" ></script>
-	<script type="text/javascript" src="../js/jquery.ui.widget.js" ></script>
+<script type="text/javascript" src="../js/jquery.ui.widget.js" ></script>
 <script type="text/javascript" src="../js/jquery.fileupload.js" ></script>
+
 <link rel="stylesheet" href="../css/tab.css" />
 <link rel="stylesheet" href="../bootstrap/css/bootstrap-select.css" />
 <link rel="stylesheet" href="../bootstrap/css/bootstrap-table.min.css" />
@@ -20,6 +21,8 @@
 <link rel="stylesheet" href="../css/addemployee.css" />
 <link rel="stylesheet" href="../css/bossdeptdis.css" />
 <link rel="stylesheet" href="../css/addjob.css" />
+<link rel="stylesheet" href="../css/process.css" />
+<link rel="stylesheet" href="../css/importtab.css" />
 
 <script type="text/javascript" src="../js/login.js"></script>
 <script type="text/javascript" src="../js/show.js"></script>
@@ -33,8 +36,8 @@
 <script type="text/javascript" src="../js/bossdeptdis.js" ></script>
 <script type="text/javascript" src="../js/tab.js" ></script>
 <script type="text/javascript" src="../js/addjob.js"></script>
-<link rel="stylesheet" href="../css/process.css" />
 <script type="text/javascript" src="../js/process.js" ></script>
+<script type="text/javascript" src="../js/importtab.js" ></script>
 
 <style>
 	@font-face {
@@ -1005,48 +1008,224 @@
 		</div>
 	</div>
 
-<!--导入员工信息模态框-->
-	<div>
-		<div id="user_info_input_modal"  class="modal fade" data-backdrop="static">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content" style="background-color:#ffffff;">
-						<div class="modal-header">
-							<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
-							<div class="choosen-label">导入员工信息</div>
-						</div>
-
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-lg-9"></div>
-								<div class="col-lg-1">
-									<button class="btn - btn-success userinfo-add-btn" style="outline:none;" id="add_userinfo_btn" >&nbsp;添加&nbsp;</button>
-								</div>
-								<div class="col-lg-2"></div>
+		<!--导入员工信息模态框-->
+		<div>
+			<div id="user_info_input_modal"  class="modal fade" data-backdrop="static">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">导入员工信息</div>
 							</div>
-							<div class="row">
-								<div class="col-lg-1"></div>
-								<div class="col-lg-10">
-									<div class="row files excel-files" style="overflow:auto;height:350px;">
-										<!-- 文件上传功能 -->
-										<table class="table table-hover" id="userinfo_table">										
-										</table>
-										<div>
-											<input type="file" accept=".xls,.xlsx" name="userinfo_upload" id="userinfo_upload" style="display: none;"/>
+	
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-9"></div>
+									<div class="col-lg-1">
+										<button class="btn - btn-success userinfo-add-btn" style="outline:none;" id="add_userinfo_btn" >&nbsp;添加&nbsp;</button>
+									</div>
+									<div class="col-lg-2"></div>
+								</div>
+								<div class="row">
+									<div class="col-lg-1"></div>
+									<div class="col-lg-10">
+										<div class="row files excel-files" style="overflow:auto;height:350px;">
+											<!-- 文件上传功能 -->
+											<table class="table table-hover" id="userinfo_table">										
+											</table>
+											<div>
+												<input type="file" accept=".xls,.xlsx" name="userinfo_upload" id="userinfo_upload" style="display: none;"/>
+											</div>
 										</div>
 									</div>
+									<div class="col-lg-1"></div>
 								</div>
-								<div class="col-lg-1"></div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<div>
-								<button id="userinfo_submit" class="btn btn-success mybtn" style="outline:none;">导入</button>
+							<div class="modal-footer">
+								<div>
+									<button id="userinfo_submit" class="btn btn-success mybtn" style="outline:none;">导入</button>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+			</div>
 		</div>
-	</div>
+		
+		<!--员工SID重复弹出模态框-->
+		<div>
+			<div id="sidrecheck_modal"  class="modal fade" data-backdrop="static">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content" style="background-color:#ffffff;">
+							<div class="modal-header">
+								<span data-dismiss="modal" aria-hidden="true" class="close glyphicon glyphicon-remove-circle"></span>
+								<div class="choosen-label">员工身份证重复</div>
+							</div>
+	
+							<div class="modal-body">
+								
+								<div id="page-wrap">
+									<div id="top_ul" class="flashBg" style="width:100%;overflow: hidden;">
+										<div style="float: left;width: 5%;">
+											<img id="lefticon" src="../img/left.png" style="width: 24px;height: 24px;margin-top: 20%;" />
+										</div>
+										<div style="float: left;width: 90%;overflow: hidden;">
+											<ul id="main-nav" class="" style="width:1000%;height:41px;position: relative;">
+											</ul>
+										</div>
+										<div style="float: left;width: 5%;">
+											<img id="righticon" src="../img/right.png" style="width: 24px;height: 24px;margin-top: 20%;margin-left: 25%;" />
+										</div>
+									</div>
+									
+									<div id="featured">
+										<div style="height: 100%;margin-left: 5%;margin-right: 5%;border: 2px solid #cdd1d7;">
+												<div style="height: 100%; overflow-y: scroll;padding-top: 2%;">
+													<div style="height: 65%;">
+														<div class="col-lg-6">
+															<div class="form-inline">
+																<sup class="required-flag">*</sup>
+																<label>姓&nbsp;&nbsp;名&nbsp;&nbsp;：</label>
+																<span id="tagNameVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<sup class="requiredless-flag">*</sup>
+																<label>电&nbsp;&nbsp;话&nbsp;&nbsp;：</label>
+																<span id="tagTelephoneVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<label>&nbsp;&nbsp;籍&nbsp;&nbsp;贯&nbsp;&nbsp;：</label>
+																<span id="tagUsernativeVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<sup class="required-flag">*</sup>
+																<label>性&nbsp;&nbsp;别&nbsp;&nbsp;：</label>
+																<span id="tagSexVal"></span>
+															</div>
+							
+														</div>
+							
+														<div class="col-lg-6">
+							
+															<div class="form-inline ">
+																<sup class="requiredless-flag">*</sup>
+																<label>邮&nbsp;&nbsp;箱&nbsp;&nbsp;：</label>
+																<span id="tagEmailVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<sup class="required-flag">*</sup>
+																<label>身份证&nbsp;&nbsp;：</label>
+																<span id="tagSidVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<label>&nbsp;&nbsp;现居地&nbsp;&nbsp;：</label>
+																<span id="tagLocVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<sup class="required-flag">*</sup>
+																<label>工&nbsp;&nbsp;资&nbsp;&nbsp;：</label>
+																<span id="tagSalVal"></span>
+															</div>
+							
+															<div class="form-inline littlebox">
+																<div onclick="Tagmoredetails()">
+																	<div class="openclosebtn">
+																		<span id="showmorecovertext" style="color:#107CB7;margin-left: 190px;">更多展开</span>
+																		<span class="ion-chevron-down" id="showmorecovericon"></span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+							
+													<div style="margin-top: 2px;height: 33%;display: none;background-color: #f1f4f5;" id="morecoverdetails">
+														<div class="col-lg-6">
+															<div class="form-inline " style="margin-top: 15px;">
+																<label>&nbsp;&nbsp;毕业院校：</label>
+																<span id="tagDucationVal"></span>
+															</div>
+															<div class="form-inline littlebox">
+																<label>&nbsp;&nbsp;毕业级别：</label>
+																<span id="tagEducationlevelVal"></span>
+															</div>
+														</div>
+							
+														<div class="col-lg-6" style="">
+															<div class="form-inline littlebox">
+																<label>&nbsp;&nbsp;证书：</label>
+																<span id="tagCertificateVal"></span>
+															</div>
+														</div>
+													</div>
+													
+													<div style="margin-top: 2px;height: 33%;background-color: white;">
+														<div class="col-lg-6">
+															<div class="form-inline littlebox">
+																<sup class="required-flag">*</sup>
+																<label>所在部门：</label>
+																<span id="tagDeptVal"></span>
+															</div>
+															
+															<div class="form-inline" style="margin-top: 15px;">
+																<sup class="required-flag">*</sup>
+																<label>职&nbsp;&nbsp;位&nbsp;&nbsp;：</label>
+																<span id="tagJobVal"></span>
+															</div>
+															
+														</div>
+														
+														<div class="col-lg-6">
+															<div class="form-inline" style="margin-top: 15px;">
+																<sup class="required-flag">*</sup>
+																<label>所在地区：</label>
+																<span id="tagAddressVal"></span>
+															</div>
+															
+															<div class="form-inline" style="margin-top: 15px;">
+																<sup class="required-flag">*</sup>
+																<label>级&nbsp;&nbsp;别&nbsp;&nbsp;：</label>
+																<span id="tagLevelVal"></span>
+															</div>
+															
+														</div>
+													</div>
+
+							
+													<div style="height: 25%;margin-top: 1%;" id="tagbutton">
+														<div class="col-lg-3"></div>
+														<div class="col-lg-1">
+															<button id="jumpimportbtn" class="btn btn-info mybtn" style="outline:none;">跳过</button>
+														</div>
+														<div class="col-lg-3"></div>
+														<div class="col-lg-1">
+															<button id="coverimportbtn" class="btn btn-success mybtn" style="outline:none;">覆盖</button>
+														</div>
+														<div class="col-lg-4"></div>
+													</div>
+												</div>
+										</div>
+							
+									</div>
+								</div>
+								
+							</div>
+							<div class="modal-footer">
+								<div>
+									<button id="jumpallimportbtn" class="btn btn-info mybtn" style="outline:none;">全部跳过</button>
+									<button id="coverallimportbtn" class="btn btn-success mybtn" style="outline:none;">全部覆盖</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		
+		
 							
 	</div>
 </div>	

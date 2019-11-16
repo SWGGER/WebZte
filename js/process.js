@@ -9,7 +9,6 @@ $(document).ready(function(){
 var provalue = 0;
 function goprogress(){
 	var row_info = {"globle_selected_id":globle_selected_id};
-    console.log(row_info);      
 	$.ajax({
         type:"POST",
         dataType:"json",
